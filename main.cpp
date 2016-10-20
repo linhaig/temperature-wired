@@ -18,8 +18,6 @@ void turnOff()
 
 int main()
 {
-    int result;
-
     // Assign turnOff function to falling edge of button
     button.fall(&turnOff);
 
@@ -32,8 +30,9 @@ int main()
     // The buck-boost regulator will remain off until init is called
 
     // Call init to apply all settings to the PMIC
-    result = max14720.init();
-    if (result == MAX14720_ERROR) printf("Error initializing MAX14720");
+    if (max14720.init() == MAX14720_ERROR) {
+        printf("Error initializing MAX14720");
+    }
 
     // Wait 1 second to see the buck-boost regulator turn on
     wait(1);
@@ -49,7 +48,7 @@ int main()
         wait(0.5);
 
         // Change the voltage of the buck-boost regulator
-        // Note that the MAX14720 cannot change the buck-boost voltage while  
+        // Note that the MAX14720 cannot change the buck-boost voltage while
         // it is enabled so if boostEn is set to BOOST_ENABLED, this
         // function will disable it, change the voltage, and re-enable it.
         max14720.boostSetVoltage(5000);
